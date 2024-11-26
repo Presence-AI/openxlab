@@ -1,11 +1,11 @@
-""" 
+"""
 remove the dataset repository
 """
 from argparse import ArgumentParser
 from argparse import Namespace
 
-from dataset.handler.remove_dataset_repository import remove_repo
-from types.command_type import *
+from openxlab.dataset.handler.remove_dataset_repository import remove_repo
+from openxlab.types.command_type import BaseCommand
 
 
 class Remove(BaseCommand):

@@ -1,10 +1,10 @@
 import sys
 import time
 
-from model.clients.openapi_client import OpenapiClient
-from model.common.constants import endpoint
-from xlab.handler.user_token import get_token
-from model.common.thread_pool import bury_thread_pool
+from openxlab.model.clients.openapi_client import OpenapiClient
+from openxlab.model.common.constants import endpoint
+from openxlab.xlab.handler.user_token import get_token
+from openxlab.model.common.thread_pool import bury_thread_pool
 
 
 def bury_data_upload_task(_event_name_: str, client: OpenapiClient):

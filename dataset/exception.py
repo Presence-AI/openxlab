@@ -23,9 +23,6 @@ class OpenDataLabError(Exception):
 
 
 class RespError(OpenDataLabError):
-    """
-
-    """
     STATUS_CODE: int
     _INDENT = " " * len(__qualname__)  # type: ignore
 

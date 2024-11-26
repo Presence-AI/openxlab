@@ -9,11 +9,11 @@ import time
 
 import requests
 
-from dataset.constants import BASE_DELAY
-from dataset.constants import MAX_DELAY
-from dataset.constants import MAX_RETRIES
-from dataset.constants import TIMEOUT
-from dataset.utils import retry_with_backoff
+from openxlab.dataset.constants import BASE_DELAY
+from openxlab.dataset.constants import MAX_DELAY
+from openxlab.dataset.constants import MAX_RETRIES
+from openxlab.dataset.constants import TIMEOUT
+from openxlab.dataset.utils import retry_with_backoff
 
 
 class Worker:
@@ -129,8 +129,8 @@ class BigFileDownloader:
             # main
             self.__main_thread_done = threading.Event()
             #
-            readable_size = self.__get_readable_size(self.file_size)
-            pathfilename = os.path.join(self.download_dir, self.prefix, self.filename)
+            self.__get_readable_size(self.file_size)
+            os.path.join(self.download_dir, self.prefix, self.filename)
 
     def __get_size(self):
         try:
@@ -352,7 +352,11 @@ class BigFileDownloader:
                 readable_speed = self.__get_readable_size(speed)
                 # print(s,t,readable_speed)
                 percentage = self.__download_record[-1]["size"] / self.file_size * 100
-                status_msg = f"\r[{self.idx+1}. file: {self.filename} download info] File Progress: {percentage:.2f} % | Speed: {readable_speed}/s | Number of Workers: {len(self.workers)} | Time Elapsed: {(time.time() - self.start_since):.0f}s | ETA: {((self.file_size- dwn_size)/(speed+EPSILON)):.2f}s"
+                status_msg = (f"\r[{self.idx+1}. file: {self.filename} download info] "
+                              f"File Progress: {percentage:.2f} % | Speed: {readable_speed}/s | "
+                              f"Number of Workers: {len(self.workers)} | Time Elapsed: "
+                              f"{(time.time() - self.start_since):.0f}s | "
+                              f"ETA: {((self.file_size- dwn_size)/(speed+EPSILON)):.2f}s")
 
                 self.__whistleblower(status_msg)
                 # speed monitor

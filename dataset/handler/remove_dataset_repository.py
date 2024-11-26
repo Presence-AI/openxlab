@@ -1,11 +1,10 @@
-""" 
+"""
 delete dataset repository for user
 """
 from rich import print as rprint
 
-from dataset.commands.utility import ContextInfoNoLogin
-from types.command_type import *
-from xlab.handler.user_token import trigger_update_check
+from openxlab.dataset.commands.utility import ContextInfoNoLogin
+from openxlab.xlab.handler.user_token import trigger_update_check
 
 
 def remove_repo(dataset_repo: str):
@@ -20,7 +19,7 @@ def remove_repo(dataset_repo: str):
     """
     # update check
     trigger_update_check()
-    
+
     ctx = ContextInfoNoLogin()
     client = ctx.get_client()
     parsed_ds_name = dataset_repo.replace("/", ",")

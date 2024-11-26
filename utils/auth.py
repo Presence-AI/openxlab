@@ -1,7 +1,7 @@
 import json
 import os
 
-from config import const
+from openxlab.config import const
 
 
 def get_token() -> str:
@@ -12,7 +12,8 @@ def get_token() -> str:
 
 
 def check_login():
-    """check user login or not. If user logged in, return true, else return false. Used in ls or info dataset repository command"""
+    """check user login or not. If user logged in, return true, else return false.
+    Used in ls or info dataset repository command"""
     try:
         config_path = os.path.join(const.DEFAULT_CONFIG_DIR, const.DEFAULT_CLI_CONFIG_FILE_NAME)
         if os.path.exists(config_path):

@@ -1,26 +1,19 @@
 from argparse import ArgumentParser
 from argparse import Namespace
-from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Tuple
-from typing import Type
-from typing import Union
 
 
 class BaseCommand:
-    """Base class for commands.
-    """
+    """Base class for commands."""
+
     sub_command_list = []
 
     def __init__(self) -> None:
         pass
-        
+
     def get_name():
         """define command name"""
         pass
-        
+
     def add_arguments(self, parser: ArgumentParser) -> None:
         """Add arguments required for each command.
 

@@ -1,25 +1,34 @@
 """
 Download function for related files in the reality model library
 """
-import logging
-import re
-from tqdm import tqdm
-import requests
-import os
+
 import hashlib
+import logging
+import os
+import re
 import sys
+
+import requests
+from tqdm import tqdm
+
+from openxlab.model.clients.openapi_client import OpenapiClient
+from openxlab.model.common.bury import bury_data
+from openxlab.model.common.constants import default_metafile_template_name
+from openxlab.model.common.constants import endpoint
+from openxlab.model.common.constants import model_cache_path
+from openxlab.model.common.constants import river_pass_url
+from openxlab.model.common.constants import token
+
+
 # import urllib.parse
 
-
-from model.clients.openapi_client import OpenapiClient
-from model.common.constants import endpoint, token, default_metafile_template_name, model_cache_path, \
-    river_pass_url
-from model.common.bury import bury_data
 
 logger = logging.getLogger("openxlab.model")
 
 
-def download(model_repo, model_name=None, output=None, overwrite=False, ignore=None, cache=True) -> None:
+def download(
+    model_repo, model_name=None, output=None, overwrite=False, ignore=None, cache=True
+) -> None:
     """
     download model file|meta file|log filee|readme file
     usage: cli & sdk
@@ -41,20 +50,24 @@ def download(model_repo, model_name=None, output=None, overwrite=False, ignore=N
         print(f"Error: {e}")
         return
     file_path_download = []
-    cache_path = os.path.join(model_cache_path, f'{username}_{repository}')
+    cache_path = os.path.join(model_cache_path, f"{username}_{repository}")
     # 根据模型名称下载
     for i_name, i_model in models.items() if models is not None else []:
-        url = i_model['url']
-        file_name = i_model['fileName']
-        _hash = i_model['hash']
-        file_path = _download_to_local(url, file_name, output, overwrite, cache_path, allow_cache=cache)
+        url = i_model["url"]
+        file_name = i_model["fileName"]
+        i_model["hash"]
+        file_path = _download_to_local(
+            url, file_name, output, overwrite, cache_path, allow_cache=cache
+        )
         file_path_download.append(file_path)
     # 根据文件路径下载
     for i_name, i_file in files.items() if files is not None else []:
-        url = i_file['url']
-        file_name = i_file['fileName']
-        _hash = i_file['hash']
-        file_path = _download_to_local(url, file_name, output, overwrite, cache_path, allow_cache=cache)
+        url = i_file["url"]
+        file_name = i_file["fileName"]
+        i_file["hash"]
+        file_path = _download_to_local(
+            url, file_name, output, overwrite, cache_path, allow_cache=cache
+        )
         file_path_download.append(file_path)
     print("download model repo:{} file finished".format(model_repo))
     return file_path_download
@@ -81,20 +94,25 @@ def download_from_url(url, path=None, overwrite=False, file_name=None):
     try:
         # url_encoded = urllib.parse.quote(url)
         # print(f'url encoded:{url_encoded}')
-        river_pass_download_url = river_pass_url + '?url=' + url
-        md5 = hashlib.md5(url.encode('utf-8'))
+        river_pass_download_url = river_pass_url + "?url=" + url
+        md5 = hashlib.md5(url.encode("utf-8"))
         url_hash = md5.hexdigest()
-        path_file = _download_to_local(river_pass_download_url, file_name=file_name, path=path,
-                                       overwrite=overwrite, allow_cache=True,
-                                       cache_path=os.path.join(os.path.expanduser("~"), '.cache', 'riverpass',
-                                                               url_hash))
+        path_file = _download_to_local(
+            river_pass_download_url,
+            file_name=file_name,
+            path=path,
+            overwrite=overwrite,
+            allow_cache=True,
+            cache_path=os.path.join(os.path.expanduser("~"), ".cache", "riverpass", url_hash),
+        )
     except Exception as e:
-        print(f"use the original path to download")
+        print("use the original path to download")
         print(f"riverpass info:{e}")
-        path_file = _download_to_local(url, file_name=file_name, path=path,
-                                       overwrite=overwrite, allow_cache=True)
+        path_file = _download_to_local(
+            url, file_name=file_name, path=path, overwrite=overwrite, allow_cache=True
+        )
 
-    print(f'success download file: {path_file}')
+    print(f"success download file: {path_file}")
     return path_file
 
 
@@ -103,16 +121,18 @@ def _split_repo(model_repo) -> (str, str):
     Split a full repository name into two separate strings: the username and the repository name.
     """
     # username/repository format check
-    pattern = r'.+/.+'
+    pattern = r".+/.+"
     if not re.match(pattern, model_repo):
         raise ValueError("The input string must be in the format 'username/model_repo'")
 
-    values = model_repo.split('/')
+    values = model_repo.split("/")
     return values[0], values[1]
 
 
 @bury_data("download_file")
-def _download_to_local(url, file_name, path=None, overwrite=False, cache_path=None, allow_cache=None) -> str:
+def _download_to_local(
+    url, file_name, path=None, overwrite=False, cache_path=None, allow_cache=None
+) -> str:
     """
     download file to local with progress_bar
     url: file download url
@@ -129,11 +149,11 @@ def _download_to_local(url, file_name, path=None, overwrite=False, cache_path=No
     if allow_cache is None or allow_cache:
         allow_cache = sys_allow_cache()
     if path is not None:
-        path_file = os.path.join(path, file_name).replace('\\', '/')
+        path_file = os.path.join(path, file_name).replace("\\", "/")
     if allow_cache is True:
         if cache_path is None:
             cache_path = model_cache_path
-        cache_path_file = os.path.join(cache_path, file_name).replace('\\', '/')
+        cache_path_file = os.path.join(cache_path, file_name).replace("\\", "/")
         if not os.path.exists(cache_path):
             os.makedirs(cache_path)
         elif os.path.exists(cache_path_file) and overwrite is not True:
@@ -142,10 +162,10 @@ def _download_to_local(url, file_name, path=None, overwrite=False, cache_path=No
 
     response = requests.get(url, stream=True)
     response.raise_for_status()
-    total_size_in_bytes = int(response.headers.get('content-length', 0))
+    total_size_in_bytes = int(response.headers.get("content-length", 0))
     block_size = 1024
-    progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True, desc=file_name)
-    with open(cache_path_file if allow_cache else path_file, 'wb') as f:
+    progress_bar = tqdm(total=total_size_in_bytes, unit="iB", unit_scale=True, desc=file_name)
+    with open(cache_path_file if allow_cache else path_file, "wb") as f:
         for data in response.iter_content(block_size):
             progress_bar.update(len(data))
             f.write(data)
@@ -157,7 +177,7 @@ def _download_to_local(url, file_name, path=None, overwrite=False, cache_path=No
 
 def get_file_hash(filename):
     hasher = hashlib.md5()
-    with open(filename, 'rb') as file:
+    with open(filename, "rb") as file:
         file_size = file.seek(0, 2)
         if file_size <= 128:  # 如果文件小于等于128字节
             combined_block = file.read(file_size)  # 只读取一次，并将所有数据组合在一起
@@ -189,7 +209,7 @@ def sys_allow_cache():
     """
     win disable cache
     """
-    if sys.platform.startswith('win'):
+    if sys.platform.startswith("win"):
         return False
     else:
         return True

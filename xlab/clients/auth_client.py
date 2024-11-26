@@ -1,6 +1,6 @@
 import requests as requests
 
-from xlab.common.response_dto import ReturnDto
+from openxlab.xlab.common.response_dto import ReturnDto
 
 
 def http_common_header():

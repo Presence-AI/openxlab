@@ -1,10 +1,13 @@
+from argparse import ArgumentParser
+from argparse import Namespace
 import getpass
+import os
 
-from types.command_type import *
-from xlab.handler.user_config import clear_dataset_json
-from xlab.handler.user_config import get_dataset_path
-from xlab.handler.user_login import login
-from xlab.handler.user_token import *
+from openxlab.types.command_type import BaseCommand
+from openxlab.xlab.handler.user_config import clear_dataset_json
+from openxlab.xlab.handler.user_config import get_config_path
+from openxlab.xlab.handler.user_config import get_dataset_path
+from openxlab.xlab.handler.user_login import login
 
 
 class Login(BaseCommand):
@@ -30,7 +33,3 @@ class Login(BaseCommand):
         ak = input("openxlab: Paste your Access Key here: ")
         sk = getpass.getpass("openxlab: Paste your Secrete Key here: ")
         login(ak.strip(), sk.strip(), re_login)
-
-
-
-

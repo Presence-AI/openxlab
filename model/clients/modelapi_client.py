@@ -1,11 +1,11 @@
-import requests
-
-from xlab.handler.user_token import get_jwt
-from utils.id_util import generate_unique_id
-import json
 import base64
+import json
 import os
 
+import requests
+
+from openxlab.utils.id_util import generate_unique_id
+from openxlab.xlab.handler.user_token import get_jwt
 
 
 class ModelApiClient(object):
@@ -22,14 +22,13 @@ class ModelApiClient(object):
 
     def http_post_response_dto(self, payload):
         headers = self.http_common_header()
-        data = {'texts': payload['texts']}
-        if payload['args'] is not None:
-            data['args'] = payload['args']
-        print(f'payload:{payload}')
-        response = requests.post(self.endpoint, files=payload["files"], data=data,
-                                 headers=headers)
+        data = {"texts": payload["texts"]}
+        if payload["args"] is not None:
+            data["args"] = payload["args"]
+        print(f"payload:{payload}")
+        response = requests.post(self.endpoint, files=payload["files"], data=data, headers=headers)
         response.raise_for_status()
-        result = Result(payload, response.content, response.headers['Content-Type'])
+        result = Result(payload, response.content, response.headers["Content-Type"])
         return result
 
     def http_common_header(self):
@@ -38,9 +37,7 @@ class ModelApiClient(object):
         except ValueError as e:
             print(f"warning: {e}")
             return
-        header_dict = {
-            "Authorization": jwt
-        }
+        header_dict = {"Authorization": jwt}
         return header_dict
 
 
@@ -55,24 +52,24 @@ class Result(object):
 
     @property
     def predictions(self):
-        if 'application/json' not in self.content_type:
+        if "application/json" not in self.content_type:
             return None
         data = json.loads(self.original)
         if type(data) == dict:
-            return data['predictions']
+            return data["predictions"]
         else:
             for item in data:
-                if 'visualization' in item:
-                    del item['visualization']
+                if "visualization" in item:
+                    del item["visualization"]
         return data
 
     @property
     def visualization(self):
         data = json.loads(self.original)
-        if 'application/json' not in self.content_type:
+        if "application/json" not in self.content_type:
             return None
         if type(data) == dict:
-            return data['visualization']
+            return data["visualization"]
         else:
             visualization_list = [item["visualization"] for item in data]
             return visualization_list
@@ -83,9 +80,9 @@ class Result(object):
         if not visualization:
             return visualization
 
-        input_files = self.payload['files']
+        input_files = self.payload["files"]
         if len(input_files) != len(visualization):
-            raise ValueError('input files length is not match output visualization length')
+            raise ValueError("input files length is not match output visualization length")
 
         if output_dir is not None:
             if not os.path.exists(output_dir):
@@ -94,7 +91,7 @@ class Result(object):
             output_dir = os.getcwd()
 
         for i, item in enumerate(visualization):
-            image_data_arr = item.split(',')
+            image_data_arr = item.split(",")
             if len(image_data_arr) == 2:
                 image_data = image_data_arr[1]
             else:
@@ -110,5 +107,3 @@ class Result(object):
                 file.write(image_bytes)
             output_file_list.append(file_path)
         return output_file_list
-
-

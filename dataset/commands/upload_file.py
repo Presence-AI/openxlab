@@ -1,8 +1,12 @@
-""" 
+"""
 upload file to dataset repository
 """
-from dataset.handler.upload_dataset_file import upload_file
-from types.command_type import *
+
+from argparse import ArgumentParser
+from argparse import Namespace
+
+from openxlab.dataset.handler.upload_dataset_file import upload_file
+from openxlab.types.command_type import BaseCommand
 
 
 class UploadFile(BaseCommand):
@@ -16,7 +20,8 @@ class UploadFile(BaseCommand):
             "openxlab dataset upload-file [OPTIONS]\n\n"
             "Upload file from local to remote.\n\n"
             "Example:\n"
-            "> openxlab dataset upload-file --dataset-repo \"username/dataset-repo-name\" --source-path \"/path/to/local/file\" --target-path \"/raw/file\""
+            '> openxlab dataset upload-file --dataset-repo \"username/dataset-repo-name\" '
+            '--source-path \"/path/to/local/file\" --target-path \"/raw/file\"'
         )
         parser.add_argument(
             "-r",
@@ -38,12 +43,22 @@ class UploadFile(BaseCommand):
             # required=True,
             help=("The target path to upload file.[optional]"),
         )
+        parser.add_argument(
+            "--upload_network",
+            type=str,
+            help=(
+                "upload_network [cdn|vpc]. Specifies the network type for file upload, "
+                "cdn (default): Use Content Delivery Network for faster distribution. "
+                "vpc: Use Virtual Private Cloud for enhanced security and privacy.[optional]"
+            ),
+        )
 
     def take_action(self, parsed_args: Namespace) -> int:
         upload_file(
             dataset_repo=parsed_args.dataset_repo,
             source_path=parsed_args.source_path,
             target_path=parsed_args.target_path,
+            upload_network=parsed_args.upload_network,
         )
 
         return 0

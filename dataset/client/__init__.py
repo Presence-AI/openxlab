@@ -1,4 +1,4 @@
-from dataset.client.client import Client
+from openxlab.dataset.client.client import Client
 
 
 __all__ = [

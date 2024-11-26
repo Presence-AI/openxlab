@@ -1,14 +1,14 @@
+from os.path import exists
 import re
 import sys
-from os.path import exists
 
 
 def get_file_content(file_name):
     with open(file_name, encoding='utf-8') as f:
         content = f.read()
     return content
-    
-    
+
+
 def parse_requirements(fname='requirements.txt', with_version=True):
     """Parse the package dependencies listed in a requirements file but strips
     specific versioning information.

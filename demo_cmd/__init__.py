@@ -1,5 +1,7 @@
-from config import version as config_version
-from types.command_type import *
+from argparse import ArgumentParser
+from argparse import Namespace
+
+from openxlab.types.command_type import BaseCommand
 
 
 def help():

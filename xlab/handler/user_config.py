@@ -1,8 +1,10 @@
 import json
+import os
 
-from config import const
-from utils.env_util import *
-from utils.file import *
+from openxlab.config import const
+from openxlab.utils.env_util import get_env
+from openxlab.utils.env_util import set_env
+from openxlab.utils.file import get_file_content
 
 
 def get_config_path() -> str:
@@ -20,11 +22,14 @@ def get_dataset_path() -> str:
 def get_version_path() -> str:
     return os.path.join(get_config_dir(), get_version_file_name())
 
+
 def get_config_dir() -> str:
     return const.DEFAULT_CONFIG_DIR
 
+
 def get_version_file_name() -> str:
     return const.DEFAULT_CLI_VERSION_FILE_NAME
+
 
 def get_token_file_name() -> str:
     return const.DEFAULT_CLI_TOKEN_FILE_NAME
@@ -50,18 +55,19 @@ def get_config(ak=None, sk=None, auth=False):
         # need login
         if auth is True and not ak_env_value:
             raise Exception(
-                "Please login openxlab and config ak/sk, try \"openxlab login\" and refer to https://openxlab.org.cn/docs/developers/鉴权管理.html"
+                'Please login openxlab and config ak/sk, try "openxlab login" '
+                "and refer to https://openxlab.org.cn/docs/developers/鉴权管理.html"
             )
         return None
     config_json = get_file_content(get_config_path())
     config_dict = json.loads(config_json)
-    return UserConfig(config_dict['ak'], config_dict['sk'])
+    return UserConfig(config_dict["ak"], config_dict["sk"])
 
 
 def clear_dataset_json():
     """clear the content in dataset.json file"""
     try:
-        with open(get_dataset_path(), 'w') as f:
+        with open(get_dataset_path(), "w") as f:
             f.truncate(0)
     except Exception as e:
         raise (e)
@@ -83,5 +89,5 @@ class UserConfig(object):
         config_json = self.to_json()
         set_env(const.AK_ENV_NAME, self.ak)
         set_env(const.SK_ENV_NAME, self.sk)
-        with open(get_config_path(), mode="w", encoding='utf-8') as f:
+        with open(get_config_path(), mode="w", encoding="utf-8") as f:
             f.write(config_json)

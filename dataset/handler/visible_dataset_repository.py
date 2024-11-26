@@ -3,9 +3,8 @@ update dataset repository
 """
 from rich import print as rprint
 
-from dataset.commands.utility import ContextInfoNoLogin
-from dataset.exception import *
-from xlab.handler.user_token import trigger_update_check
+from openxlab.dataset.commands.utility import ContextInfoNoLogin
+from openxlab.xlab.handler.user_token import trigger_update_check
 
 
 def visibility(dataset_repo: str, private: bool):
@@ -24,7 +23,7 @@ def visibility(dataset_repo: str, private: bool):
     """
     # update check
     trigger_update_check()
-    
+
     ctx = ContextInfoNoLogin()
     client = ctx.get_client()
     permission = 'private' if private else 'public'
@@ -33,7 +32,7 @@ def visibility(dataset_repo: str, private: bool):
     parsed_ds_name = dataset_repo.replace("/", ",")
     # check dataset repository validation to set status as public
     if private:
-        check_resp = client.get_api().check_public_validation(parsed_ds_name)
-    resp = client.get_api().set_repo_permission(parsed_ds_name, private)
+        client.get_api().check_public_validation(parsed_ds_name)
+    client.get_api().set_repo_permission(parsed_ds_name, private)
 
     rprint(f"Visibility: [blue]{dataset_repo}[/blue] now is {permission}.")

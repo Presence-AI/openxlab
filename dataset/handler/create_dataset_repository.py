@@ -1,12 +1,11 @@
-""" 
-create new dataset repository 
+"""
+create new dataset repository
 """
 
 from rich import print as rprint
 
-from dataset.commands.utility import ContextInfoNoLogin
-from types.command_type import *
-from xlab.handler.user_token import trigger_update_check
+from openxlab.dataset.commands.utility import ContextInfoNoLogin
+from openxlab.xlab.handler.user_token import trigger_update_check
 
 
 def create_repo(repo_name: str, private: bool = False):

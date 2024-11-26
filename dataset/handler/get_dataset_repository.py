@@ -1,4 +1,4 @@
-""" 
+"""
 get dataset repository totally
 """
 
@@ -8,14 +8,13 @@ from typing import Tuple
 
 from rich import print as rprint
 
-from dataset.commands.utility import ContextInfoNoLogin
-from dataset.constants import FILE_THRESHOLD
-from dataset.io import downloader
-from dataset.utils import bytes2human
-from dataset.utils import calculate_file_sha256
-from dataset.utils import format_progress_string
-from types.command_type import *
-from xlab.handler.user_token import trigger_update_check
+from openxlab.dataset.commands.utility import ContextInfoNoLogin
+from openxlab.dataset.constants import FILE_THRESHOLD
+from openxlab.dataset.io import downloader
+from openxlab.dataset.utils import bytes2human
+from openxlab.dataset.utils import calculate_file_sha256
+from openxlab.dataset.utils import format_progress_string
+from openxlab.xlab.handler.user_token import trigger_update_check
 
 
 def get(dataset_repo: str, target_path=""):
@@ -34,7 +33,7 @@ def get(dataset_repo: str, target_path=""):
     """
     # update check
     trigger_update_check()
-    
+
     if not target_path:
         target_path = os.getcwd()
     if target_path.startswith('~'):
@@ -69,7 +68,7 @@ def get(dataset_repo: str, target_path=""):
             client, object_info_list, target_path, parsed_save_path, info_dataset_id
         )
     client.get_api().track_download_dataset_files(dataset_name=parsed_ds_name, file_path="")
-    rprint(f"Download Completed.")
+    rprint("Download Completed.")
     rprint(f"The {obj} has been successfully downloaded to {local_file_path}")
 
 

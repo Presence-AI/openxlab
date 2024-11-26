@@ -1,8 +1,11 @@
-""" 
+"""
 get the information of dataset repository
 """
-from dataset.handler.info_dataset_repository import info
-from types.command_type import *
+from argparse import ArgumentParser
+from argparse import Namespace
+
+from openxlab.dataset.handler.info_dataset_repository import info
+from openxlab.types.command_type import BaseCommand
 
 
 class Info(BaseCommand):
@@ -14,7 +17,8 @@ class Info(BaseCommand):
     def add_arguments(self, parser: ArgumentParser) -> None:
         parser.usage = (
             "openxlab dataset info [OPTIONS]\n\n"
-            "Get the information of a dataset repository.\nNote: if you are not log in, you can only get the information of public dataset repository.\n\n"
+            "Get the information of a dataset repository.\n"
+            "Note: if you are not log in, you can only get the information of public dataset repository.\n\n"
             "Example:\n"
             "> openxlab dataset info --dataset-repo \"username/dataset-repo-name\""
         )

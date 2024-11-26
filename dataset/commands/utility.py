@@ -4,10 +4,9 @@ from typing import Any
 from typing import Callable
 from typing import TypeVar
 
-from dataset.client.client import Client
-from dataset.constants import endpoint
-from dataset.exception import *
-from dataset.exception import OpenDataLabError
+from openxlab.dataset.client.client import Client
+from openxlab.dataset.constants import endpoint
+from openxlab.dataset.exception import OpenDataLabError
 
 
 _Callable = TypeVar("_Callable", bound=Callable[..., None])
@@ -30,22 +29,22 @@ def exception_handler(func: _Callable) -> _Callable:
             func(*args, **kwargs)
         except OpenDataLabError as err:
             if err.STATUS_CODE == 401:
-                print(f"Error: authentication failure, please login!")
+                print("Error: authentication failure, please login!")
                 pass
             elif err.STATUS_CODE == 403:
-                print(f"Unable to access. Please visit the dataset homepage!")
+                print("Unable to access. Please visit the dataset homepage!")
                 pass
             elif err.STATUS_CODE == 404:
-                print(f"Data not exists!")
+                print("Data not exists!")
                 pass
             elif err.STATUS_CODE == 412:
-                print(f"Access with cdn error!")
+                print("Access with cdn error!")
                 pass
             elif err.STATUS_CODE == 500:
-                print(f"Internal server occurs!")
+                print("Internal server occurs!")
                 pass
             else:
-                print(f"Error occurs!!!")
+                print("Error occurs!!!")
 
             sys.exit(1)
 

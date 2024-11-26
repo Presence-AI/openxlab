@@ -1,7 +1,7 @@
 from argparse import Namespace
 
-from types.command_type import BaseCommand
-from xlab.handler import user_token
+from openxlab.types.command_type import BaseCommand
+from openxlab.xlab.handler import user_token
 
 
 class Token(BaseCommand):

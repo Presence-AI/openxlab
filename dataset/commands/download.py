@@ -1,8 +1,11 @@
-""" 
+"""
 download dataset file|folder cli
 """
-from dataset.handler.download_dataset_repository import download
-from types.command_type import *
+from argparse import ArgumentParser
+from argparse import Namespace
+
+from openxlab.dataset.handler.download_dataset_repository import download
+from openxlab.types.command_type import BaseCommand
 
 
 class Download(BaseCommand):
@@ -16,7 +19,8 @@ class Download(BaseCommand):
             "openxlab dataset download [options]\n\n"
             "Download file or folder of a dataset repository.\n\n"
             "Example:\n"
-            "> openxlab dataset download --dataset-repo \"username/dataset-repo-name\" --source-path \"/raw/file\" --target-path \"/path/to/local/folder\""
+            "> openxlab dataset download --dataset-repo \"username/dataset-repo-name\" "
+            "--source-path \"/raw/file\" --target-path \"/path/to/local/folder\""
         )
         parser.add_argument(
             "-r",

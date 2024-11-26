@@ -2,7 +2,7 @@ import os.path
 import time
 import json
 
-from config import const
+from openxlab.config import const
 
 
 class LocalCache:

@@ -1,4 +1,4 @@
-""" 
+"""
 download specific file/files according to source_path(single file/relative path) of dataset repository
 """
 import os
@@ -6,12 +6,9 @@ import re
 
 from rich import print as rprint
 
-from dataset.commands.utility import ContextInfoNoLogin
-from dataset.constants import FILE_THRESHOLD
-from dataset.handler.get_dataset_repository import process_download_files
-from dataset.io import downloader
-from dataset.utils import calculate_file_sha256
-from xlab.handler.user_token import trigger_update_check
+from openxlab.dataset.commands.utility import ContextInfoNoLogin
+from openxlab.dataset.handler.get_dataset_repository import process_download_files
+from openxlab.xlab.handler.user_token import trigger_update_check
 
 
 def download(dataset_repo: str, source_path: str, target_path=""):
@@ -80,5 +77,5 @@ def download(dataset_repo: str, source_path: str, target_path=""):
     client.get_api().track_download_dataset_files(
         dataset_name=parsed_ds_name, file_path=source_path
     )
-    rprint(f"Download Completed.")
+    rprint("Download Completed.")
     rprint(f"The {obj} has been successfully downloaded to {local_file_path}")

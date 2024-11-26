@@ -2,16 +2,16 @@
 模型推理功能
 """
 
-import base64
+import json
 import os
 import re
-import json
 
 import requests
 
-from model.clients.modelapi_client import ModelApiClient
-from model.clients.openapi_client import OpenapiClient
-from model.common.constants import endpoint, token
+from openxlab.model.clients.modelapi_client import ModelApiClient
+from openxlab.model.clients.openapi_client import OpenapiClient
+from openxlab.model.common.constants import endpoint
+from openxlab.model.common.constants import token
 
 
 class Inference:
@@ -29,7 +29,7 @@ class Inference:
             client = OpenapiClient(endpoint, token)
 
             model_repo_info = client.query_model_repo_info(username, repository)
-            model_api_client = ModelApiClient(model_repo_info['inferUrl'], token)
+            model_api_client = ModelApiClient(model_repo_info["inferUrl"], token)
             texts, files = _process_inputs(input)
             payload = {"files": files, "texts": texts}
             if args:
@@ -55,11 +55,11 @@ def _split_repo(model_repo) -> (str, str):
     Split a full repository name into two separate strings: the username and the repository name.
     """
     # username/repository format check
-    pattern = r'.+/.+'
+    pattern = r".+/.+"
     if not re.match(pattern, model_repo):
         raise ValueError("The input string must be in the format 'username/model_repo'")
 
-    values = model_repo.split('/')
+    values = model_repo.split("/")
     return values[0], values[1]
 
 
@@ -71,7 +71,7 @@ def _process_inputs(inputs):
     else:
         inputs = [inputs]
     for input_str in inputs:
-        if input_str.startswith('http'):
+        if input_str.startswith("http"):
             # if input is a URL
             response = requests.get(input_str)
             input_data = response.content
@@ -87,5 +87,3 @@ def _process_inputs(inputs):
             # input_data = input_str
             texts.append(input_str)
     return texts, files
-
-

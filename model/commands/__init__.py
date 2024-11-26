@@ -1,13 +1,16 @@
-from types.command_type import *
-from model.commands.download import Download
-from model.commands.wget import Wget
-from model.commands.upload import Upload
-from model.commands.init import Init
-from model.commands.create import Create
-from model.commands.list import List
-from model.commands.visibility import Visibility
-from model.commands.remove import Remove
-from model.commands.inference import Inference
+from argparse import ArgumentParser
+from argparse import Namespace
+
+from openxlab.model.commands.create import Create
+from openxlab.model.commands.download import Download
+from openxlab.model.commands.inference import Inference
+from openxlab.model.commands.init import Init
+from openxlab.model.commands.list import List
+from openxlab.model.commands.remove import Remove
+from openxlab.model.commands.upload import Upload
+from openxlab.model.commands.visibility import Visibility
+from openxlab.model.commands.wget import Wget
+from openxlab.types.command_type import BaseCommand
 
 
 class Model(BaseCommand):
@@ -22,9 +25,7 @@ class Model(BaseCommand):
         parser.add_argument(
             "--foo",
             type=str,
-            help=(
-                "this is an argument for test"
-            ),
+            help=("this is an argument for test"),
         )
 
     def take_action(self, parsed_args: Namespace) -> int:

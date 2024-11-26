@@ -4,9 +4,9 @@ query repo or model info
 
 import re
 
-from model.clients.openapi_client import OpenapiClient
-from model.common.constants import endpoint, token
-from model.common.bury import bury_data
+from openxlab.model.clients.openapi_client import OpenapiClient
+from openxlab.model.common.constants import endpoint, token
+from openxlab.model.common.bury import bury_data
 
 
 @bury_data()

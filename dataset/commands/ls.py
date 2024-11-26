@@ -1,8 +1,11 @@
-""" 
+"""
 get the file list of the dataset repository
 """
-from dataset.handler.list_dataset_repository import query
-from types.command_type import *
+from argparse import ArgumentParser
+from argparse import Namespace
+
+from openxlab.dataset.handler.list_dataset_repository import query
+from openxlab.types.command_type import BaseCommand
 
 
 class Ls(BaseCommand):
@@ -14,7 +17,8 @@ class Ls(BaseCommand):
     def add_arguments(self, parser: ArgumentParser) -> None:
         parser.usage = (
             "openxlab dataset ls [OPTIONS]\n\n"
-            "List dataset repository resources. \nNote: if you are not log in, you can only get the list of public dataset repository.\n\n"
+            "List dataset repository resources. \n"
+            "Note: if you are not log in, you can only get the list of public dataset repository.\n\n"
             "Example:\n"
             "> openxlab dataset ls --dataset-repo \"username/dataset-repo-name\""
         )

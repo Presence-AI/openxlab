@@ -6,15 +6,15 @@ from urllib.parse import quote
 import requests
 from rich import print as rprint
 
-from dataset.constants import BASE_DELAY
-from dataset.constants import computed_url
-from dataset.constants import MAX_DELAY
-from dataset.constants import MAX_RETRIES
-from dataset.constants import TIMEOUT
-from dataset.exception import *
-from dataset.utils import highlight_urls
-from dataset.utils import retry_with_backoff
-from xlab.handler.user_token import get_jwt
+from openxlab.dataset.constants import BASE_DELAY
+from openxlab.dataset.constants import computed_url
+from openxlab.dataset.constants import MAX_DELAY
+from openxlab.dataset.constants import MAX_RETRIES
+from openxlab.dataset.constants import TIMEOUT
+from openxlab.dataset.exception import OpenDataLabError
+from openxlab.dataset.utils import highlight_urls
+from openxlab.dataset.utils import retry_with_backoff
+from openxlab.xlab.handler.user_token import get_jwt
 
 
 base_headers = {
@@ -92,7 +92,8 @@ class XlabDatasetAPI(object):
         if not result_dict['list']:
             err_msg = OpenDataLabError(
                 404,
-                f'Failed to retrieve the dataset list. Please verify if the source path "{source_path}" exists within the dataset repository.',
+                f'Failed to retrieve the dataset list. Please verify if the source path "{source_path}" '
+                'exists within the dataset repository.',
             )
             print(err_msg)
             sys.exit(-1)
@@ -110,7 +111,8 @@ class XlabDatasetAPI(object):
             timeout=TIMEOUT,
         )
 
-        # add special symbol for web when the user do not fill in the form of user information or the form of application for dataset
+        # add special symbol for web when the user do not fill in the form of user information
+        # or the form of application for dataset
         if resp.status_code == 601 or resp.status_code == 602:
             err_msg = OpenDataLabError(
                 resp.status_code, highlight_urls(text=resp.text, suffix="?from=cli")
@@ -173,8 +175,7 @@ class XlabDatasetAPI(object):
             timeout=TIMEOUT,
         )
         if resp.status_code != 200:
-            print(f"{OpenDataLabError(resp.status_code, resp.text)}")
-            sys.exit(-1)
+            raise Exception(f"{OpenDataLabError(resp.status_code, resp.text)}")
         resp_json = resp.json()
         data = resp_json['data']
         return data
@@ -193,8 +194,7 @@ class XlabDatasetAPI(object):
             timeout=TIMEOUT,
         )
         if resp.status_code != 200:
-            print(f"{OpenDataLabError(resp.status_code, resp.text)}")
-            sys.exit(-1)
+            raise RuntimeError(f"{OpenDataLabError(resp.status_code, resp.text)}")
         resp_json = resp.json()
         data = resp_json["data"]
         return data

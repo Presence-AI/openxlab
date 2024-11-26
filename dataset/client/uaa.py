@@ -3,17 +3,15 @@ import sys
 
 import requests
 
-from dataset.constants import odl_clientId
-from dataset.constants import uaa_url_prefix
-from xlab.handler.user_token import get_jwt
-from xlab.handler.user_token import get_token
-from xlab.handler.user_token import get_token_from_local
+from openxlab.dataset.constants import odl_clientId
+from openxlab.dataset.constants import uaa_url_prefix
+from openxlab.xlab.handler.user_token import get_jwt
+from openxlab.xlab.handler.user_token import get_token
 
 
 api_auth = "/api/v1/internal/auth"
 clientId = odl_clientId
 auth_url = uaa_url_prefix + api_auth
-
 
 
 def get_auth_code(sso_uid):
@@ -34,13 +32,13 @@ def get_auth_code(sso_uid):
 
 
 def get_odl_token(ak, sk):
-    status = get_jwt(ak, sk)
+    get_jwt(ak, sk)
     token = get_token()
     sso_uid = token.sso_uid
     if sso_uid:
         auth_code = get_auth_code(sso_uid=sso_uid)
 
     if not auth_code:
-        print(f"Error: Auth failure")
+        print("Error: Auth failure")
         sys.exit(1)
     return auth_code, sso_uid

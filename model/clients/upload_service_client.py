@@ -1,7 +1,6 @@
 import requests
 
-from model.common.constants import paths
-from model.common.response_dto import ReturnDto
+from openxlab.model.common.response_dto import ReturnDto
 
 
 class UploadServiceClient(object):
@@ -10,18 +9,31 @@ class UploadServiceClient(object):
         self.token = token
 
     def get_upload_signature(self, repository_id, uid, model, model_info):
-        payload = {"tag": "file", "key": "model-center", "type": 0, "fileType": "file/pth",
-                   "fileName": model_info['objectName'],
-                   "data": {"repositoryId": repository_id, "modelId": model_info['modelId'],
-                            "modelName": model_info['modelName'], "weightName": model_info['weightName'],
-                            "uid": uid}}
+        payload = {
+            "tag": "file",
+            "key": "model-center",
+            "type": 0,
+            "fileType": "file/pth",
+            "fileName": model_info["objectName"],
+            "data": {
+                "repositoryId": repository_id,
+                "modelId": model_info["modelId"],
+                "modelName": model_info["modelName"],
+                "weightName": model_info["weightName"],
+                "uid": uid,
+            },
+        }
         response_dto = self.http_post_response_dto("", payload)
-        if response_dto.msg_code != '10000':
-            raise ValueError(f"Get upload signature error:{response_dto.msg}, traceId:{response_dto.trace_id}")
-        if response_dto.data['msgCode'] != '10000':
-            raise ValueError(f"Get upload signature error:{response_dto.data['msg']}, "
-                             f"traceId:{response_dto.data['traceId']}")
-        return response_dto.data['data']
+        if response_dto.msg_code != "10000":
+            raise ValueError(
+                f"Get upload signature error:{response_dto.msg}, traceId:{response_dto.trace_id}"
+            )
+        if response_dto.data["msgCode"] != "10000":
+            raise ValueError(
+                f"Get upload signature error:{response_dto.data['msg']}, "
+                f"traceId:{response_dto.data['traceId']}"
+            )
+        return response_dto.data["data"]
 
     def http_post_response_dto(self, path, payload):
         headers = self.http_common_header()
@@ -37,8 +49,6 @@ class UploadServiceClient(object):
             "Content-Type": "application/json",
             "accept": "application/json",
             "id": "597091",
-            "Authorization": f"Bearer {self.token}"
+            "Authorization": f"Bearer {self.token}",
         }
         return header_dict
-
-

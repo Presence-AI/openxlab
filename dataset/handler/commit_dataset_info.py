@@ -1,8 +1,8 @@
-""" 
+"""
 commit message of change of dataset repository
 """
-from dataset.commands.utility import ContextInfoNoLogin
-from xlab.handler.user_token import trigger_update_check
+from openxlab.dataset.commands.utility import ContextInfoNoLogin
+from openxlab.xlab.handler.user_token import trigger_update_check
 
 
 def commit(dataset_repo: str, commit_message: str):

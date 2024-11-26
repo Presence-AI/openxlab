@@ -25,14 +25,14 @@ def get_api_token_from_env():
 
 
 SYMBOLS = {
-    'customary': ('B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'),
-    'customary_ext': ('byte', 'kilo', 'mega', 'giga', 'tera', 'peta', 'exa', 'zetta', 'iotta'),
-    'iec': ('Bi', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi'),
-    'iec_ext': ('byte', 'kibi', 'mebi', 'gibi', 'tebi', 'pebi', 'exbi', 'zebi', 'yobi'),
+    "customary": ("B", "K", "M", "G", "T", "P", "E", "Z", "Y"),
+    "customary_ext": ("byte", "kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "iotta"),
+    "iec": ("Bi", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi"),
+    "iec_ext": ("byte", "kibi", "mebi", "gibi", "tebi", "pebi", "exbi", "zebi", "yobi"),
 }
 
 
-def bytes2human(n, format='%(value).1f%(symbol)s', symbols='customary'):
+def bytes2human(n, format="%(value).1f%(symbol)s", symbols="customary"):
     """
     Convert n bytes into a human-readable string based on format.
     symbols can be either "customary", "customary_ext", "iec" or "iec_ext",
@@ -61,7 +61,7 @@ def human2bytes(s):
     """
     init = s
     num = ""
-    while s and s[0:1].isdigit() or s[0:1] == '.':
+    while s and s[0:1].isdigit() or s[0:1] == ".":
         num += s[0]
         s = s[1:]
     num = float(num)
@@ -70,9 +70,9 @@ def human2bytes(s):
         if letter in sset:
             break
     else:
-        if letter == 'k':
+        if letter == "k":
             # treat 'k' as an alias for 'K' as per: http://goo.gl/kTQMs
-            sset = SYMBOLS['customary']
+            sset = SYMBOLS["customary"]
             letter = letter.upper()
         else:
             raise ValueError("can't interpret %r" % init)
@@ -83,19 +83,20 @@ def human2bytes(s):
 
 
 def format_progress_string(progress, idx, total_files, finished_size, total_size):
-    return f"Total progress: {progress}%, total files:{idx+1}/{total_files}, downloaded size: {bytes2human(finished_size)}, total size: {bytes2human(total_size)}"
+    return (f"Total progress: {progress}%, total files:{idx+1}/{total_files}, "
+            f"downloaded size: {bytes2human(finished_size)}, total size: {bytes2human(total_size)}")
 
 
 def str2bool(v):
     """convert keywords like true to True, so do as False"""
     if isinstance(v, bool):
         return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+    if v.lower() in ("yes", "true", "t", "y", "1"):
         return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+    elif v.lower() in ("no", "false", "f", "n", "0"):
         return False
     else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
+        raise argparse.ArgumentTypeError("Boolean value expected.")
 
 
 def find_url(text: str) -> List[str]:
@@ -145,7 +146,7 @@ def calculate_file_sha256(file_path: str, buf_size: int = 131072):
     if not Path(file_path).is_file():
         raise Exception(f"file {file_path} does not exist")
     sha256_obj = hashlib.sha256()
-    with open(file_path, 'rb') as f:
+    with open(file_path, "rb") as f:
         while True:
             data = f.read(buf_size)
             if not data:
@@ -177,7 +178,7 @@ def get_file_content(file_path: str, buf_size: int = 131072) -> str:
     if not Path(file_path).is_file():
         raise Exception(f"file {file_path} does not exist")
     file_content = b""
-    with open(file_path, 'rb') as f:
+    with open(file_path, "rb") as f:
         while True:
             data = f.read(buf_size)
             if not data:
@@ -207,11 +208,11 @@ def retry_with_backoff(max_retries=3, base_delay=1, max_delay=32):
             while retry_count < max_retries:
                 try:
                     return func(*args, **kwargs)
-                except requests.exceptions.ConnectionError as e:
+                except requests.exceptions.ConnectionError:
                     # print(f"ConnectionError: {e}")
                     time.sleep(delay)
                     retry_count += 1
-                    delay = min(delay * 2, max_delay)
+                    # delay = min(delay * 2, max_delay)
 
             # print(f"Function {func.__name__} failed after {max_retries} retries.")
             raise Exception(

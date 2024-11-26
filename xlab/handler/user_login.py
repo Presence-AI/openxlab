@@ -1,7 +1,7 @@
 import os
 
-from xlab.handler.user_config import UserConfig, get_config_path
-from xlab.handler.user_token import get_token_via_api
+from openxlab.xlab.handler.user_config import UserConfig, get_config_path
+from openxlab.xlab.handler.user_token import get_token_via_api
 import logging
 
 logger = logging.getLogger("openxlab")

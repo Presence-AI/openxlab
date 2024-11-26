@@ -1,14 +1,14 @@
-""" 
+"""
 query to get the information of dataset repository
 """
 from rich import box
 from rich.console import Console
 from rich.table import Table
 
-from dataset.commands.utility import ContextInfoNoLogin
-from dataset.constants import MAX_FILES_PER_DIR
-from dataset.utils import bytes2human
-from xlab.handler.user_token import trigger_update_check
+from openxlab.dataset.commands.utility import ContextInfoNoLogin
+from openxlab.dataset.constants import MAX_FILES_PER_DIR
+from openxlab.dataset.utils import bytes2human
+from openxlab.xlab.handler.user_token import trigger_update_check
 
 
 def info(dataset_repo: str):
@@ -92,7 +92,8 @@ def filter_paths(file_path_dict, max_files_per_dir=MAX_FILES_PER_DIR):
 
     Args:
         file_path_dict (dict): A dictionary containing file paths as keys and their sizes as values.
-        max_files_per_dir (int, optional): Maximum number of files to display per directory. Defaults to MAX_FILES_PER_DIR.
+        max_files_per_dir (int, optional): Maximum number of files to display per directory.
+        Defaults to MAX_FILES_PER_DIR.
 
     Returns:
         dict: A dictionary containing filtered file paths and sizes.

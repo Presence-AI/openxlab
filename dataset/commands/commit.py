@@ -1,8 +1,11 @@
-""" 
+"""
 commit message to dataset repository cli
 """
-from dataset.handler.commit_dataset_info import commit
-from types.command_type import *
+from argparse import ArgumentParser
+from argparse import Namespace
+
+from openxlab.dataset.handler.commit_dataset_info import commit
+from openxlab.types.command_type import BaseCommand
 
 
 class Commit(BaseCommand):

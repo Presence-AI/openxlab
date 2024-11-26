@@ -1,11 +1,12 @@
+from argparse import Namespace
 import getpass
 
-from types.command_type import *
-from xlab.handler.user_token import *
+from openxlab.types.command_type import BaseCommand
+from openxlab.xlab.handler.user_config import UserConfig
 
 
 class Config(BaseCommand):
-    """Config Openxlab AKSK"""
+    """Config Openxlab AK SK"""
 
     def get_name(self) -> str:
         return "config"

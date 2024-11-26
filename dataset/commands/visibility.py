@@ -5,9 +5,9 @@ setting dataset repository visibility-cli
 from argparse import ArgumentParser
 from argparse import Namespace
 
-from dataset.handler.visible_dataset_repository import visibility
-from dataset.utils import str2bool
-from types.command_type import *
+from openxlab.dataset.handler.visible_dataset_repository import visibility
+from openxlab.dataset.utils import str2bool
+from openxlab.types.command_type import BaseCommand
 
 
 class Visibility(BaseCommand):

@@ -1,20 +1,21 @@
+from argparse import ArgumentParser
+from argparse import Namespace
 import inspect
 import logging
 import sys
-from argparse import ArgumentParser, Namespace
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Dict
+from typing import List
 
-from dataset import Dataset
-from demo_cmd import Demo
-from model.commands import Model
-from types.command_type import BaseCommand
-from xlab import Config
-from xlab.commands.login_command import Login
-from xlab.commands.token_command import Token
+from openxlab.dataset import Dataset
+from openxlab.demo_cmd import Demo
+from openxlab.model.commands import Model
+from openxlab.types.command_type import BaseCommand
+from openxlab.xlab import Config
+from openxlab.xlab.commands.login_command import Login
+from openxlab.xlab.commands.token_command import Token
 
 # from openxlab.xlab import Version
-from xlab.commands.version_command import Version
-from xlab.handler.user_token import get_token
+from openxlab.xlab.commands.version_command import Version
 
 
 # 定义一级子命令
@@ -27,7 +28,7 @@ class AllCommand(BaseCommand):
 
 # 递归添加子命令
 def _add_sub_commands_recur(
-        main_parser: ArgumentParser, parent_parser: ArgumentParser, command_type: BaseCommand
+    main_parser: ArgumentParser, parent_parser: ArgumentParser, command_type: BaseCommand
 ) -> Dict[str, ArgumentParser]:
     subparsers = main_parser.add_subparsers()
 
@@ -42,10 +43,12 @@ def _add_sub_commands_recur(
         command.add_arguments(subparser)
 
         # 通过是否实现 take_action 判定命令的默认行为
-        if issubclass(command_type, BaseCommand) and getattr(BaseCommand, "take_action") is not getattr(command_type,
-                                                                                                        "take_action"):
+        if issubclass(command_type, BaseCommand) and getattr(
+            BaseCommand, "take_action"
+        ) is not getattr(command_type, "take_action"):
             subparser.set_defaults(handler=command.take_action)
         else:
+
             def _print_help(args: Namespace) -> None:
                 subparser.print_help()
 

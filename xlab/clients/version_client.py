@@ -36,7 +36,7 @@ class VersionClient(object):
             )
         return response_data
 
-    def from_camel_case(self, camel_dict:dict):
+    def from_camel_case(self, camel_dict: dict):
         snake_dict = {}
         for key, value in camel_dict.items():
             snake_key = re.sub(r'(?<!^)(?=[A-Z])', '_', key).lower()

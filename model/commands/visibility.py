@@ -1,8 +1,12 @@
 """
 setting model repository visibility-cli
 """
-from types.command_type import *
-from model import visibility
+
+from argparse import ArgumentParser
+from argparse import Namespace
+
+from openxlab.model import visibility
+from openxlab.types.command_type import BaseCommand
 
 
 class Visibility(BaseCommand):
@@ -12,10 +16,20 @@ class Visibility(BaseCommand):
         return "visibility"
 
     def add_arguments(self, parser: ArgumentParser) -> None:
-        parser.add_argument('-r', '--model-repo', required=True,
-                            help='model repository address. format:username/repository.')
-        parser.add_argument('-prt', '--private', type=bool, default=False, required=False,
-                            help='set repository visibility.')
+        parser.add_argument(
+            "-r",
+            "--model-repo",
+            required=True,
+            help="model repository address. format:username/repository.",
+        )
+        parser.add_argument(
+            "-prt",
+            "--private",
+            type=bool,
+            default=False,
+            required=False,
+            help="set repository visibility.",
+        )
 
     def take_action(self, parsed_args: Namespace) -> int:
         private = False

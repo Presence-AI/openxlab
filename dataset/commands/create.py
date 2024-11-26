@@ -1,9 +1,12 @@
-""" 
+"""
 create dataset repository-cli
 """
-from dataset.handler.create_dataset_repository import create_repo
-from dataset.utils import str2bool
-from types.command_type import *
+from argparse import ArgumentParser
+from argparse import Namespace
+
+from openxlab.dataset.handler.create_dataset_repository import create_repo
+from openxlab.dataset.utils import str2bool
+from openxlab.types.command_type import BaseCommand
 
 
 class Create(BaseCommand):

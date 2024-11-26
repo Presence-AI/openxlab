@@ -1,14 +1,14 @@
-""" 
+"""
 get the list of dataset repository
 """
 from rich import box
 from rich.console import Console
 from rich.table import Table
 
-from dataset.commands.utility import ContextInfoNoLogin
-from dataset.exception import *
-from dataset.utils import bytes2human
-from xlab.handler.user_token import trigger_update_check
+from openxlab.dataset.commands.utility import ContextInfoNoLogin
+from openxlab.dataset.exception import OdlAccessDeniedError
+from openxlab.dataset.utils import bytes2human
+from openxlab.xlab.handler.user_token import trigger_update_check
 
 
 def query(dataset_repo: str):

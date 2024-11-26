@@ -1,8 +1,9 @@
-import sys
+from argparse import ArgumentParser
+from argparse import Namespace
 
-from config import version as config_version
-from types.command_type import *
-from xlab.handler.user_token import update_version_check
+from openxlab.config import version as config_version
+from openxlab.types.command_type import BaseCommand
+from openxlab.xlab.handler.user_token import update_version_check
 
 
 class Version(BaseCommand):
@@ -34,7 +35,9 @@ class Version(BaseCommand):
             # current_version < latest_version
             if not is_latest_version:
                 print(
-                    f"You are using openxlab version {current_version}; however, version {latest_version} is available. Consider using 'pip install -U openxlab' to avoid version compatibility problems."
+                    f"You are using openxlab version {current_version}; "
+                    f"however, version {latest_version} is available. "
+                    f"Consider using 'pip install -U openxlab' to avoid version compatibility problems."
                 )
             #  current_version >= latest_version
             else:

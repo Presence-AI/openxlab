@@ -1,10 +1,10 @@
 import requests
 
-from model.common.constants import paths
-from model.common.response_dto import ReturnDto
-from model.common.meta_file_util import get_meta_payload, get_filename_from_url
+from openxlab.model.common.constants import paths
+from openxlab.model.common.response_dto import ReturnDto
+from openxlab.model.common.meta_file_util import get_meta_payload, get_filename_from_url
 import os
-from xlab.handler.user_token import get_jwt
+from openxlab.xlab.handler.user_token import get_jwt
 
 
 class OpenapiClient(object):

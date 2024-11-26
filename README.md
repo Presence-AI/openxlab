@@ -44,3 +44,9 @@ This allows inspection & copying of the upstream source into this project.
 ```sh
 .venv/bin/pcu ./requirements-dev.txt
 ```
+
+#### Sync upstream openlab source code
+
+```sh
+rsync -avh .venv/lib/python3.12/site-packages/openxlab/* ./ --delete
+```
